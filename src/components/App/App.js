@@ -1,8 +1,9 @@
 import React from 'react';
+import ImageArea from '../ImageArea/ImageArea';
 
 function App() {
   return (
-    <p>Hello, World!</p>
+    <ImageArea />
   );
 }
 
