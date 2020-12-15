@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import notes from './notes';
-import isActive from './isActive';
+import isFormActive from './isFormActive';
+import currentTag from './currentTag';
 
 const reducers = combineReducers({
+  currentTag,
   notes,
-  isActive,
+  isFormActive,
 });
 
 export default reducers;

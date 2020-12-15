@@ -3,3 +3,16 @@
   height: 300px;
   opacity: 0.1;
 }
+
+.tag {
+  width: .5vw;
+  height: .5vw;
+  border-radius: 50%;
+  border: .25vw solid gray;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.currentTag {
+  border-color: green;
+}

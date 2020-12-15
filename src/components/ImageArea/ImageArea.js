@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import addNote from '../../store/actionCreator/add_note';
+import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import formVisibility from '../../store/actionCreator/formVisibility';
+import currentTag from '../../store/actionCreator/currentTag';
 import Note from '../Note/Note';
 import styles from './ImageArea.module.css';
 
-function ImageArea(props) {
+const ImageArea = React.memo(() => {
   const [src, setSrc] = useState();
-  const { notes: notesProp } = props;
-  const [notes, setNotes] = useState(notesProp);
-  // const [clickX, setClickX] = useState();
-  // const [clickY, setClickY] = useState();
+  const [clickX, setClickX] = useState();
+  const [clickY, setClickY] = useState();
+  const dispatch = useDispatch();
+  const notes = useSelector((state) => state.notes);
+  const isFormActive = useSelector((state) => state.isFormActive);
+  const tag = useSelector((state) => state.currentTag);
+  const handleClick = useCallback((e) => {
+    setClickX(e.pageX);
+    setClickY(e.pageY);
+    dispatch(currentTag(''));
+    dispatch(formVisibility(true));
+  }, []);
+
+  const handleClickOnTag = useCallback((id) => {
+    dispatch(currentTag(id));
+  }, []);
+
   function onDr(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -36,17 +49,6 @@ function ImageArea(props) {
     updateImageSrc(e.target.files[0]);
   }
 
-  function handleClick(e) {
-    // setClickX(e.clientX);
-    // setClickY(e.clientY);
-    console.log(props, 'asd')
-    props.addNote({
-      tagPositionX: e.clientX, tagPositionY: e.clientY, note: '123',
-    });
-  }
-
-  console.log(props, 'asd2')
-
   return (
     <>
       <form>
@@ -71,29 +73,29 @@ function ImageArea(props) {
         <img src={src} alt="" />
       </div>
       <ul>
-        {props.notes.forEach((el, id) => (
-          <li key={id}>
-            <p>{id}</p>
-          </li>
+        {notes.map((note) => (
+          <div
+            key={note.id}
+            className={note.id === tag ? `${styles.tag} ${styles.currentTag}` : `${styles.tag}`}
+            style={{ left: note.tagPositionX, top: note.tagPositionY }}
+            onClick={() => handleClickOnTag(note.id)}
+          />
         ))}
       </ul>
+
+      {isFormActive
+        ? (
+          <>
+            <div
+              className={`${styles.currentTag} ${styles.tag}`}
+              style={{ left: clickX, top: clickY }}
+            />
+            <Note position={{ left: clickX, top: clickY }} />
+          </>
+        )
+        : null}
     </>
   );
-}
+});
 
-function mapDispatchToProps() {
-  return function (dispatch) {
-    return { addNote: bindActionCreators(addNote, dispatch) };
-  };
-}
-
-function mapStateToProps() {
-  return function (state) {
-    return { notes: state.notes };
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ImageArea);
+export default ImageArea;
