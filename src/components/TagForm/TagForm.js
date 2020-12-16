@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux';
 import addNote from '../../store/actionCreator/addNote';
 import formVisibility from '../../store/actionCreator/formVisibility';
 import currentTag from '../../store/actionCreator/currentTag';
-import styles from './Note.module.css';
+import styles from './TagForm.module.css';
 
-function Note(props) {
-  console.log(props)
+function TagForm(props) {
   const { position } = props;
   const [inputValue, setInputValue] = useState();
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ function Note(props) {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      style={{ left: position.left, top: position.top + 10 }}
+      style={{ left: position.clickX, top: position.clickY + 10 }}
       className={styles.form}
     >
       <input type="text" onChange={(e) => setInputValue(e.target.value)} />
@@ -41,4 +40,4 @@ function Note(props) {
   );
 }
 
-export default Note;
+export default TagForm;

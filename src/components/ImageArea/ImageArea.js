@@ -1,21 +1,34 @@
-import React, { useState, useCallback } from 'react';
+import React, {
+  useState, useCallback, useEffect, useRef,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import formVisibility from '../../store/actionCreator/formVisibility';
 import currentTag from '../../store/actionCreator/currentTag';
-import Note from '../Note/Note';
+import TagForm from '../TagForm/TagForm';
 import styles from './ImageArea.module.css';
 
 const ImageArea = React.memo(() => {
-  const [src, setSrc] = useState();
+  const [tagPositionX, setTagPositionX] = useState();
+  const [tagPositionY, setTagPositionY] = useState();
   const [clickX, setClickX] = useState();
   const [clickY, setClickY] = useState();
+  const [imageWidth, setImageWidth] = useState(0);
+  const [imageHeight, setImageHeight] = useState(0);
+  const [imagePositionX, setImagePositionX] = useState(0);
+  const [imagePositionY, setImagePositionY] = useState(0);
+  const imageRef = useRef();
+
   const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes);
   const isFormActive = useSelector((state) => state.isFormActive);
   const tag = useSelector((state) => state.currentTag);
-  const handleClick = useCallback((e) => {
+  const src = useSelector((state) => state.src);
+
+  const handleClick = useCallback((e, width, height) => {
     setClickX(e.pageX);
     setClickY(e.pageY);
+    setTagPositionX((e.pageX - imageRef.current.offsetLeft) * (100 / width));
+    setTagPositionY((e.pageY - imageRef.current.offsetTop) * (100 / height));
     dispatch(currentTag(''));
     dispatch(formVisibility(true));
   }, []);
@@ -24,60 +37,44 @@ const ImageArea = React.memo(() => {
     dispatch(currentTag(id));
   }, []);
 
-  function onDr(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  useEffect(() => {
+    setImagePositionX(imageRef.current.offsetLeft);
+    setImagePositionY(imageRef.current.offsetTop);
+    setImageWidth(imageRef.current.offsetWidth);
+    setImageHeight(imageRef.current.offsetHeight);
 
-  function updateImageSrc(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      setSrc(e.target.result);
+    const resizeEventListener = () => {
+      setImagePositionX(imageRef.current.offsetLeft);
+      setImagePositionY(imageRef.current.offsetTop);
+      setImageHeight(imageRef.current.offsetHeight);
+      setImageWidth(imageRef.current.offsetWidth);
     };
-  }
 
-  function onDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const dt = e.dataTransfer;
-    const { files } = dt;
-    updateImageSrc(files[0]);
-  }
+    window.addEventListener('resize', resizeEventListener);
 
-  function handleChange(e) {
-    updateImageSrc(e.target.files[0]);
-  }
+    return () => {
+      window.removeEventListener('resize', resizeEventListener);
+    };
+  }, [src]);
 
   return (
-    <>
-      <form>
-        <label
-          htmlFor="fileUpload"
-        >
-          <input
-            className={styles.fileUpload}
-            type="file"
-            id="fileUpload"
-            accept="image/*"
-            onDrop={(e) => onDrop(e)}
-            onDragEnter={(e) => onDr(e)}
-            onDragOver={(e) => onDr(e)}
-            onDragLeave={(e) => onDr(e)}
-            onChange={(e) => handleChange(e)}
-          />
-          Upload image
-        </label>
-      </form>
-      <div onClick={(e) => handleClick(e)}>
-        <img src={src} alt="" />
-      </div>
+    <div className={styles.imageAreaContainer}>
+      {src
+        ? (
+          <div onClick={(e) => handleClick(e, imageWidth, imageHeight)}>
+            <img src={src} alt="" className={styles.image} ref={imageRef} />
+          </div>
+        )
+        : null}
       <ul>
         {notes.map((note) => (
           <div
             key={note.id}
             className={note.id === tag ? `${styles.tag} ${styles.currentTag}` : `${styles.tag}`}
-            style={{ left: note.tagPositionX, top: note.tagPositionY }}
+            style={{
+              left: (note.tagPositionX * imageWidth) / 100 + imagePositionX,
+              top: (note.tagPositionY * imageHeight) / 100 + imagePositionY,
+            }}
             onClick={() => handleClickOnTag(note.id)}
           />
         ))}
@@ -90,11 +87,14 @@ const ImageArea = React.memo(() => {
               className={`${styles.currentTag} ${styles.tag}`}
               style={{ left: clickX, top: clickY }}
             />
-            <Note position={{ left: clickX, top: clickY }} />
+            <TagForm position={{
+              left: tagPositionX, top: tagPositionY, clickX, clickY,
+            }}
+            />
           </>
         )
         : null}
-    </>
+    </div>
   );
 });
 

@@ -17,18 +17,21 @@ const ListOfNotes = React.memo(() => {
   }, []);
 
   return (
-    <ul>
-      {notes.map((el) => (
-        <li
-          key={el.id}
-          onClick={() => handleClick(el.id)}
-          className={el.id === tag ? `${styles.note} ${styles.currentNote}` : `${styles.note}`}
-        >
-          <p>{el.note}</p>
-          <button type="button" onClick={() => handleDeleteNote(notes, el.id)} />
-        </li>
-      ))}
-    </ul>
+    <div className={styles.listOfNotesContainer}>
+      <ul>
+        {notes.map((el) => (
+          <li
+            key={el.id}
+            className={el.id === tag ? `${styles.note} ${styles.currentNote}` : `${styles.note}`}
+          >
+            <div onClick={() => handleClick(el.id)}>
+              <p>{el.note}</p>
+              <button type="button" onClick={() => handleDeleteNote(notes, el.id)}>Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 });
 

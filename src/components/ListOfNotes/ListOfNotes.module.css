@@ -1,7 +1,17 @@
 .note {
+  border: 1px solid lightgray;
   background-color: gray;
+  list-style-type: none;
+  text-align: center;
+  overflow: hidden;
 }
 
 .currentNote {
-  background-color: green;
+  background-color: lightgray;
+}
+
+.listOfNotesContainer {
+  box-sizing: border-box;
+  flex: 1;
+  float: right;
 }

@@ -1,0 +1,14 @@
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.imageAndNotesContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.imageAndNotesContainerToTablet {
+  flex-direction: column;
+  flex: 4;
+}
