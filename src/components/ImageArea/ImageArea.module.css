@@ -5,11 +5,11 @@
   background-color: white;
   position: absolute;
   transform: translate(-50%, -50%);
-  border: .25vw solid lightgreen;
+  border: .25vw solid black;
 }
 
 .currentTag {
-  border-color: black;
+  border-color: lightgreen;
   background-color: white;
 }
 
@@ -20,6 +20,7 @@
 }
 
 .image {
+  pointer-events: none;
   width: 100%;
   object-fit: cover;
   min-height: 0vh;

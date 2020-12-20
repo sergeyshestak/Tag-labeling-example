@@ -21,8 +21,9 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 1vw;
   border: 1px solid lightgray;
+  box-sizing: border-box;
+  padding: 1vw;
 }
 
 .toggleTrack {
