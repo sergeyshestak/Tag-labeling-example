@@ -4,6 +4,7 @@ import styles from './LeftMenu.module.css';
 function LeftMenu() {
   const menuButtons = ['Home', 'About', 'Profile', 'Contacts', 'Info'];
   const [currentButton, setCurrentButton] = useState();
+
   return (
     <div className={styles.menu}>
       {menuButtons.map((el) => (

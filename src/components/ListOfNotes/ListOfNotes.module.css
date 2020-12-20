@@ -12,6 +12,31 @@
 
 .listOfNotesContainer {
   box-sizing: border-box;
-  flex: 1;
+  flex: 4;
   float: right;
+  min-width: 20vw;
+}
+
+.toggleGroup {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1vw;
+  border: 1px solid lightgray;
+}
+
+.toggleTrack {
+  width: 3vw;
+  height: 1.5vw;
+  border-radius: .75vw;
+  background-color: gray;
+  margin: 0 .5vw;
+}
+
+.toggle {
+  width: 1.5vw;
+  height: 1.5vw;
+  border-radius: 50%;
+  background-color: lightgray;
+  border: 0px solid transparent;
 }

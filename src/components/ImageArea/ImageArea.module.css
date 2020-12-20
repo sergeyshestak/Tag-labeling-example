@@ -15,9 +15,8 @@
 
 .imageAreaContainer {
   display: flex;
-  flex: 3;
   flex-direction: column;
-  width: 65vw;
+  min-width: 65vw;
 }
 
 .image {

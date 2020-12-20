@@ -5,8 +5,10 @@ import LeftMenu from '../LeftMenu/LeftMenu';
 import Header from '../Header/Header';
 import styles from './App.module.css';
 
+const windowWidth = window.innerWidth;
+
 function App() {
-  const [width, setWidth] = useState();
+  const [width, setWidth] = useState(windowWidth);
 
   useEffect(() => {
     const resizeEventListener = () => setWidth(window.innerWidth);
@@ -16,7 +18,7 @@ function App() {
     return () => {
       window.removeEventListener('resize', resizeEventListener);
     };
-  });
+  }, []);
 
   return (
     <>

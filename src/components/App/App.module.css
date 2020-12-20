@@ -6,9 +6,11 @@
 .imageAndNotesContainer {
   display: flex;
   flex-direction: row;
+  width: 85vw;
 }
 
 .imageAndNotesContainerToTablet {
+  display: flex;
   flex-direction: column;
-  flex: 4;
+  width: 85vw;
 }

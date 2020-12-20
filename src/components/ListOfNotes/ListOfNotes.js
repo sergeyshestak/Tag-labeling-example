@@ -18,6 +18,13 @@ const ListOfNotes = React.memo(() => {
 
   return (
     <div className={styles.listOfNotesContainer}>
+      <div className={styles.toggleGroup}>
+        <p>Latest</p>
+        <div className={styles.toggleTrack}>
+          <div className={styles.toggle} />
+        </div>
+        <p>All</p>
+      </div>
       <ul>
         {notes.map((el) => (
           <li

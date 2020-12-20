@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import changeSrc from '../../store/actionCreator/changeSrc';
 import styles from './Header.module.css';
 
-function Header() {
+const Header = React.memo(() => {
   const dispatch = useDispatch();
   const updateImageSrc = useCallback((file) => {
     const reader = new FileReader();
@@ -48,6 +48,6 @@ function Header() {
       </div>
     </header>
   );
-}
+});
 
 export default Header;

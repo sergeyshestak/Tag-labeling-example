@@ -5,7 +5,7 @@ import formVisibility from '../../store/actionCreator/formVisibility';
 import currentTag from '../../store/actionCreator/currentTag';
 import styles from './TagForm.module.css';
 
-function TagForm(props) {
+const TagForm = React.memo((props) => {
   const { position } = props;
   const [inputValue, setInputValue] = useState();
   const dispatch = useDispatch();
@@ -38,6 +38,6 @@ function TagForm(props) {
       <button type="button" onClick={() => handleCancel()}>Cansel</button>
     </form>
   );
-}
+});
 
 export default TagForm;
